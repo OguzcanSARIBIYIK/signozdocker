@@ -86,7 +86,7 @@ processors:
       - name: 'signoz.collector.id'
   memory_limiter:
     # 80% of maximum memory up to 2G
-    limit_mib: 35
+    limit_mib: 20
     # 25% of limit up to 2G
     spike_limit_mib: 10
     check_interval: 5s
