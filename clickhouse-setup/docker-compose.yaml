@@ -1,7 +1,6 @@
 version: "2.4"
 
 x-clickhouse-defaults: &clickhouse-defaults
-  restart: no
   # addding non LTS version due to this fix https://github.com/ClickHouse/ClickHouse/commit/32caf8716352f45c1b617274c7508c86b7d1afab
   image: clickhouse/clickhouse-server:23.7.3-alpine
   tty: true
@@ -156,7 +155,6 @@ services:
     depends_on:
       query-service:
         condition: service_healthy
-    restart: no
     command:
       - --queryService.url=http://query-service:8085
       - --storage.path=/data
@@ -187,7 +185,7 @@ services:
       - GODEBUG=netdns=go
       - TELEMETRY_ENABLED=true
       - DEPLOYMENT_TYPE=docker-standalone-amd
-    restart: no
+
     healthcheck:
       test:
         [
@@ -205,7 +203,6 @@ services:
   frontend:
     image: signoz/frontend:${DOCKER_TAG:-0.34.4}
     container_name: signoz-frontend
-    restart: no
     depends_on:
       - alertmanager
       - query-service
@@ -259,7 +256,6 @@ services:
       # - "14268:14268"   # Jaeger thrift HTTP
       # - "55678:55678"   # OpenCensus receiver
       # - "55679:55679"   # zPages extension
-    restart: no
     depends_on:
       clickhouse:
         condition: service_healthy
@@ -283,7 +279,6 @@ services:
     #   - "8888:8888"     # OtelCollector internal metrics
     #   - "13133:13133"   # Health check extension
     #   - "55679:55679"   # zPages extension
-    restart: no
     <<: *db-depend
 
   logspout:
@@ -295,7 +290,6 @@ services:
     command: syslog+tcp://otel-collector:2255
     depends_on:
       - otel-collector
-    restart: no
 
   # hotrod:
   #   image: jaegertracing/example-hotrod:1.30
